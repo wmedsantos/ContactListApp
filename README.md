@@ -6,8 +6,8 @@ This is a monorepo project for the ContactList application, consisting of a C# .
 
 - The backend is built using C# .NET Core.
 - It follows the Clean Architecture pattern for modularity and maintainability.
-- MongoDB is used as the database for storing contact information.
-- Redis is used for caching frequently accessed data.
+- Redis is used as the database for storing contact information.
+I was using MongoDB and redis for cache, but had to quit mongo after it did not start in my local machine docker.
 
 ### Setup
 

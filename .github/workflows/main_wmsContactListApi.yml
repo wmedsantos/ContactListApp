@@ -12,7 +12,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
 
@@ -33,8 +32,19 @@ jobs:
           push: true
           tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_0f3a9edfe8564f9baee14830b5347cf2 }}/wmedsantos/contactlist-api-img:${{ github.sha }}
           file: ./dockerfile
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
-    deploy:
-      runs-on: ubuntu-latest
-      needs: build
-      environment:
+    steps:
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'wmsContactListApi'
+          slot-name: 'production'
+          publish-profile: ${{ secrets.AzureAppService_PublishProfile_df8dba86ae6a4f7bbba0dd14c679f771 }}
+          images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_0f3a9edfe8564f9baee14830b5347cf2 }}/wmedsantos/contactlist-api-img:${{ github.sha }}'

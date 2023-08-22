@@ -20,9 +20,9 @@ jobs:
 
     - name: Build and Test
       run: |
-        dotnet restore backend/ContactLisApi/ContactLisApi.csproj
-        dotnet build backend/ContactLisApi/ContactLisApi.csproj --configuration Release
-        dotnet test backend/ContactLisApi/ContactLisApi.csproj
+        dotnet restore backend/ContactListApi/ContactLisApi.csproj
+        dotnet build backend/ContactListApi/ContactLisApi.csproj --configuration Release
+        dotnet test backend/ContactListApi/ContactLisApi.csproj
 
   deploy:
     runs-on: ubuntu-latest
@@ -35,3 +35,4 @@ jobs:
       run: |
         echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         docker-compose -f backend/ContactLisApi/docker-compose.yml up -d
+                          

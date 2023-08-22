@@ -20,9 +20,9 @@ jobs:
 
     - name: Build and Test
       run: |
-        dotnet restore
-        dotnet build --configuration Release
-        dotnet test
+        dotnet restore backend/ContactLisApi/ContactLisApi.csproj
+        dotnet build backend/ContactLisApi/ContactLisApi.csproj --configuration Release
+        dotnet test backend/ContactLisApi/ContactLisApi.csproj
 
   deploy:
     runs-on: ubuntu-latest

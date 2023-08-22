@@ -32,7 +32,7 @@ jobs:
     needs: build
     steps:
     - name: Get directory
-      run: ls -d */
+      run: ls
 
     - name: Deploy to Docker
       env:

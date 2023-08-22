@@ -19,7 +19,7 @@ jobs:
         dotnet-version: 7.x
 
     - name: Get directory
-        run: ls
+      run: ls
 
     - name: Build and Test
       run: |           

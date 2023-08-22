@@ -31,12 +31,16 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
+    - name: Get directory
+      run: ls -d */
+
     - name: Deploy to Docker
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      working-directory: ./backend/ContactListApi
       run: |
         echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        docker-compose -f /backend/ContactListApi/docker-compose.yml up -d
+        docker-compose up -d
                           
                           

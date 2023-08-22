@@ -31,16 +31,16 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-    - name: Get directory
-      run: ls
+    - name: Checkout code
+      uses: actions/checkout@v3
 
     - name: Deploy to Docker
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      working-directory: backend/ContactListApi
+      working-directory: ./backend/ContactListApi
       run: |
+        ls
         echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         docker-compose up -d
-                          
                           

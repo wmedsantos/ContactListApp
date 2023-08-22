@@ -1,0 +1,28 @@
+# Use the official .NET Core SDK image from Microsoft
+FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
+WORKDIR /app
+# Use the official .NET SDK image from Microsoft
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+WORKDIR /src
+COPY ["ContactListApi.csproj", "./"]
+RUN dotnet restore "ContactListApi.csproj"
+COPY . .
+WORKDIR "/src/ContactListApi"
+RUN dotnet build "/src/ContactListApi.csproj" -c Release -o /app/build
+
+FROM build AS publish
+RUN dotnet publish "/src/ContactListApi.csproj" -c Release -o /app/publish
+
+FROM base AS debug
+RUN apt-get update
+RUN apt-get install -y procps
+RUN apt-get install -y unzip
+RUN curl -sSL https://aka.ms/getvsdbgsh | /bin/sh /dev/stdin -v latest -l ~/vsdbg
+
+# Use the base image to create the final image
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+EXPOSE 3000  
+ENV ASPNETCORE_URLS http://*:3000
+ENTRYPOINT ["dotnet", "ContactListApi.dll","--server.urls", "http://*:3000"]

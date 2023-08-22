@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - contactlist-net
+
+  your-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: contactlist-api-img
+    container_name: contactlist-api-container
+    ports:
+      - "3000:3000"
+    depends_on:
+      - redis
+    networks:
+      - contactlist-net
+
+networks:
+  contactlist-net:

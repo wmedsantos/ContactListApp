@@ -1,0 +1,54 @@
+# .gitignore
+
+### C# .NET Core ###
+# Build output
+bin/
+obj/
+
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Visual Studio
+.vscode/
+.vs/
+*.suo
+*.user
+*.sln.docstates
+
+# Rider
+.idea/
+
+# User-specific files
+*.user
+*.suo
+*.sln.docstates
+
+# NuGet
+packages/
+*.nupkg
+nuget.exe
+*.paket/paket.exe
+paket-files/
+paket-files-cache/
+paket-files-encrypt/
+
+### Angular ###
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Angular
+/dist/
+/e2e/*.log
+
+# IDE (e.g., Visual Studio Code)
+.vscode/
+
+# Dependency directories
+.idea/
+*.suo
+*.user
+*.sln.docstates

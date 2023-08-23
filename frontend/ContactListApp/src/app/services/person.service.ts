@@ -11,7 +11,7 @@ export class PersonService {
   constructor(private _http: HttpClient) {
    }
 
-   addPerson(data: any): Observable<any> {
+  addPerson(data: any): Observable<any> {
     return this._http.post('http://134.122.117.221:3000/api/person', data)
   }
 
@@ -20,11 +20,11 @@ export class PersonService {
   }
 
   deletePerson(id: string): Observable<any> {
-    return this._http.delete(`http://134.122.117.221:3000/api/person?${id}`)
+    return this._http.delete(`http://134.122.117.221:3000/api/person/${id}`)
   }
 
   editPerson(data: any): Observable<any> {
-    return this._http.put(`http://134.122.117.221:3000/api/person?${data.id}`,data);
+    return this._http.put(`http://134.122.117.221:3000/api/person/${data.id}`,data);
   }
 }
 

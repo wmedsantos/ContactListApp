@@ -34,7 +34,7 @@ builder.Services.AddScoped<IPersonAppService, PersonAppService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var alowedOrigins = configuration.GetSection("AlowedOrigins").Get<string[]>();
+var alowedOrigins = configuration.GetSection("AllowedOrigins").Get<string[]>();
  builder.Services.AddCors(options =>
     {
         options.AddPolicy("AllowLocalhost4200", builder =>

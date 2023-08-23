@@ -31,7 +31,7 @@ jobs:
       with:
         push: true
         tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_0f3a9edfe8564f9baee14830b5347cf2 }}/wmedsantos/contactlist-api-img:${{ github.sha }}
-        file: ./Dockerfile
+        file: ./backend/ContactListApi/Dockerfile
 
   deploy:
     runs-on: ubuntu-latest

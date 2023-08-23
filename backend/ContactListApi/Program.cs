@@ -22,27 +22,29 @@ var configuration = new ConfigurationBuilder()
 IConfiguration cfgsection = configuration.GetSection("Redis");
 string redisString = cfgsection["ConnectionString"];
 Console.WriteLine($"redisString: {redisString}");
-
-// builder.Services.AddStackExchangeRedisCache(options =>
-//  {
-//      IConfiguration configurationsection = configuration.GetSection("Redis");
-//      string redisConnectionString = configurationsection["ConnectionString"];
-//      options.Configuration = redisConnectionString;
-//      //options.InstanceName = "your_cache_instance_name"; // Replace with a unique instance name
-//  });
-
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 builder.Services.AddControllers();
 
 builder.Services.AddTransient<IRedisService, RedisService>();
 //builder.Services.AddScoped<IMongoDbContext>(_ => new MongoDbContext(configuration)); 
-
        
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 builder.Services.AddScoped<IPersonAppService, PersonAppService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+var alowedOrigins = configuration.GetSection("AlowedOrigins").Get<string[]>();
+ builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("AllowLocalhost4200", builder =>
+        {
+            builder.WithOrigins(alowedOrigins)
+                   .AllowAnyHeader()
+                   .AllowAnyMethod();
+        });
+    });
+
 builder.WebHost.ConfigureKestrel(options =>
 {
     options.ListenAnyIP(3000);
@@ -56,7 +58,7 @@ var app = builder.Build();
     app.UseSwagger();
     app.UseSwaggerUI();
 //}
-
+app.UseCors("AllowLocalhost4200");
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

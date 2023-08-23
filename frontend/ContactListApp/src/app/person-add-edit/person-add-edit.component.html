@@ -1,0 +1,56 @@
+
+<div mat-dialog-title><h1>Person</h1></div>
+<form [formGroup]="personForm" (ngSubmit)="onFormSubmit()">
+<div mat-dialog-content>
+  <div class="row">
+      <mat-form-field appearance="outline">
+        <mat-label>Name</mat-label>
+        <input matInput placeholder="Ex. James" formControlName="name">
+        <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+      </mat-form-field>
+  </div>
+  <div class="row">
+      <mat-form-field appearance="outline">
+        <mat-label>Sex</mat-label>
+        <select matNativeControl required formControlName="sex">
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Age</mat-label>
+        <input matInput placeholder="28" formControlName="age">
+        <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+      </mat-form-field>
+  </div>
+  <div class="row">
+      <!-- Contacts: Use FormArray for dynamic contact inputs -->
+      <button mat-raised-button (click)="addBlankContact()">Add Contact</button>
+  </div>
+  <div class="row">
+      <div formArrayName="contacts">
+        <div *ngFor="let contact of getControls(); let i = index">
+          <div [formGroupName]="i">
+            <mat-form-field appearance="outline">
+              <select matNativeControl required formControlName="type">
+                <option value="Phone">Phone</option>
+                <option value="WhatsApp">WhatsApp</option>
+                <option value="Email">E-mail</option>
+              </select>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <input matInput placeholder="Contact Value" formControlName="contactValue">
+            </mat-form-field>
+            <button mat-icon-button (click)="removeContact(i)">
+              <mat-icon>remove_circle_outline</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+</form>
+<div mat-dialog-actions class="action">
+  <button mat-raised-button >Cancel</button>
+  <button mat-raised-button color="primary" type="submit">Save</button>
+</div>

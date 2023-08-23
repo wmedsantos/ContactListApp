@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup,  FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray, AbstractControl } from '@angular/forms';
 import { PersonService } from '../services/person.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CoreService } from '../core/core.service';
@@ -23,16 +23,60 @@ export class PersonAddEditComponent implements OnInit{
 
     this.personForm = this.fb.group({
       id: null,
-      name: '',//['', Validators.required],
+      name: ['', Validators.required],
       sex: '',
-      age: '',//['', Validators.min(0)],
+      age: ['', [Validators.required, Validators.min(0), Validators.max(150)]],
       contacts: this.fb.array([]),
     });
+
+
+  }
+
+  emailFormatValidator(control: AbstractControl): { [key: string]: any } | null {
+    const emailPattern = /^\S+@\S+\.\S+$/;
+    const valid = emailPattern.test(control.value);
+    return valid ? null : { invalidEmail: true };
+  }
+
+  phoneFormatValidator(control: AbstractControl): { [key: string]: any } | null {
+    const phonePattern = /^[789][0-9]{9}$/;
+    const valid = phonePattern.test(control.value);
+    return valid ? null : { invalidPhone: true };
   }
 
   ngOnInit(): void {
     this.personForm.patchValue (this.data);
+    let contactsFormArray = (this.personForm.get('contacts') as FormArray);
+    if (this.data){
+      while (contactsFormArray.controls.length > 0) {
+        contactsFormArray.removeAt(0);
+      }
+
+      // Loop through this.data.contacts and add controls to the 'contacts' FormArray
+      for (const contact of this.data.contacts) {
+        contactsFormArray.push(
+          this.fb.group({
+            type: [contact.type],
+            contactValue: [contact.contactValue],
+          })
+        );
+      }
+      // In your FormArray, apply the custom validator to the contactValue field
+      // contactsFormArray.controls.forEach((control) => {
+
+      //   if (control.get('type')?.value=='Email'){
+      //     alert(control.get('type')?.value);
+      //     control.get('contactValue')?.setValidators([Validators.required,this.emailFormatValidator]);
+      //   }else{
+      //     control.get('contactValue')?.setValidators([Validators.required,this.phoneFormatValidator]);
+      //   }
+
+      // });
+
+    }
   }
+
+
   onFormSubmit(){
 
     if(this.personForm.valid){
